@@ -1,4 +1,3 @@
-#SPDX-License-Identifier: MIT-0
 ---
 # tasks file for pma
 - name: Install phpmyadmin
@@ -9,14 +8,14 @@
 - name: Configure phpmyadmin
   ansible.builtin.template:
     src: ../templates/pma.j2
-    dest: /etc/nginx/sites-available/pma
+    dest: /etc/nginx/sites-available/pma.rabinmishra.com.np
     owner: root
     group: root
     mode: "0644"
 
 - name: Enable pma site
   ansible.builtin.file:
-    src: /etc/nginx/sites-available/pma
-    dest: /etc/nginx/sites-enabled/pma
+    src: /etc/nginx/sites-available/pma.rabinmishra.com.np
+    dest: /etc/nginx/sites-enabled/pma.rabinmishra.com.np
     state: link
   become: yes

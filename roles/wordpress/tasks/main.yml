@@ -1,4 +1,3 @@
-#SPDX-License-Identifier: MIT-0
 ---
 # tasks file for wordpress
 - name: Download wordpress file
@@ -23,19 +22,28 @@
     group: www-data
     mode: "644"
 
-- name: Change the default nginx sites available file
+# Create site config for ansible.rabinmishra.com.np
+- name: Add ansible site to nginx
   template:
     src: ../templates/default.j2
-    dest: /etc/nginx/sites-available/default
+    dest: /etc/nginx/sites-available/ansible.rabinmishra.com.np
     owner: root
     group: root
     mode: "0644"
   become: yes
 
+- name: Enable ansible site
+  file:
+    src: /etc/nginx/sites-available/ansible.rabinmishra.com.np
+    dest: /etc/nginx/sites-enabled/ansible.rabinmishra.com.np
+    state: link
+  become: yes
+
+# Create site config for wordpress.rabinmishra.com.np
 - name: Add wordpress site to nginx
   template:
     src: ../templates/wordpress.j2
-    dest: /etc/nginx/sites-available/wordpress
+    dest: /etc/nginx/sites-available/wordpress.rabinmishra.com.np
     owner: root
     group: root
     mode: "0644"
@@ -43,7 +51,14 @@
 
 - name: Enable wordpress site
   file:
-    src: /etc/nginx/sites-available/wordpress
-    dest: /etc/nginx/sites-enabled/wordpress
+    src: /etc/nginx/sites-available/wordpress.rabinmishra.com.np
+    dest: /etc/nginx/sites-enabled/wordpress.rabinmishra.com.np
     state: link
+  become: yes
+
+# Remove default nginx site to avoid conflicts
+- name: Remove default nginx site
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
   become: yes

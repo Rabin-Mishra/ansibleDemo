@@ -1,12 +1,22 @@
-#SPDX-License-Identifier: MIT-0
 ---
 # tasks file for certbot
 
 - name: Install certbot nginx python3
   apt:
     name:
-      - python3-certbot-nginx # Installs Certbot and its Nginx plugin for Python 3
-    state: latest # Ensures the latest version is installed
+      - python3-certbot-nginx
+    state: latest
+
+# Test nginx configuration before running certbot
+- name: Test nginx configuration
+  ansible.builtin.command: nginx -t
+  register: nginx_test
+  failed_when: nginx_test.rc != 0
+
+- name: Reload nginx to apply new configurations
+  ansible.builtin.service:
+    name: nginx
+    state: reloaded
 
 - name: Generate SSL certificate with Nginx integration
   ansible.builtin.command: >-
@@ -23,19 +33,3 @@
     'Successfully received certificate.' in certbot_result.stdout or
     'Certificate not yet due for renewal; still operating' not in certbot_result.stdout
   notify: restart nginx
-
-  
-#ansible.builtin.command: >-   # Runs a shell command
-# # certbot --nginx             # Uses Certbot with Nginx plugin
-#     --non-interactive           # Runs without prompting for user input
-#     --agree-tos                 # Automatically agrees to the terms of service
-#     --email mishrarabin92@gmail.com # Your email for Let's Encrypt notifications
-#     --redirect                  # Redirects HTTP traffic to HTTPS
-#     --staple-ocsp               # Enables OCSP stapling for better security
-#     -d {{ item }}               # The domain name(s) to secure (from the loop)
-#   loop: "{{ my_domains }}"      # Loops over a list of domains (must be defined elsewhere)
-#   register: certbot_result      # Saves the command output for later use
-#   changed_when: >-              # Marks the task as changed only if a new cert is issued or renewed
-#     'Successfully received certificate.' in certbot_result.stdout or
-#     'Certificate not yet due for renewal; still operating' not in certbot_result.stdout
-#   notify: restart nginx         # Triggers the 'restart nginx' handler if the task changes
