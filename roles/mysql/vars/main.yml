@@ -1,0 +1,10 @@
+#SPDX-License-Identifier: MIT-0
+---
+# vars file for mysql
+mysql_root_password: "rabin123"
+db_admin_password: "rabin123"
+app_user_password: "rabin123"
+
+db_admin_user: "ansible_admin"
+app_db_name: "ansible_db"
+app_user: "ansible_user"

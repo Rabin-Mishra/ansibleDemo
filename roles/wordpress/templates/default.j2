@@ -1,0 +1,28 @@
+server {
+    listen 80;
+    server_name ansible.rabinmishra.com.np;
+
+    # Default site root for static content
+    root /var/www/html;
+    index index.html index.htm;
+
+    # Default location for static content
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    
+
+    # PHP processing for default site (if needed)
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/run/php/php8.3-fpm.sock;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+
+    # Deny access to .htaccess files
+    location ~ /\.ht {
+        deny all;
+    }
+}

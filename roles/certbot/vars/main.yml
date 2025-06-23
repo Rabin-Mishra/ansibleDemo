@@ -1,0 +1,8 @@
+#SPDX-License-Identifier: MIT-0
+---
+# vars file for certbot
+
+my_domains:
+  - ansible.rabinmishra.com.np
+  - pma.rabinmishra.com.np
+  - wordpress.rabinmishra.com.np

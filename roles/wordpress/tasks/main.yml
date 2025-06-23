@@ -1,0 +1,49 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for wordpress
+- name: Download wordpress file
+  ansible.builtin.unarchive:
+    src: https://wordpress.org/latest.tar.gz
+    dest: /var/www/
+    remote_src: yes
+
+- name: Set ownership of WordPress files
+  file:
+    path: /var/www/wordpress
+    owner: www-data
+    group: www-data
+    mode: "755"
+    recurse: yes
+
+- name: Add wp-config.php
+  template:
+    src: ../templates/wp-config.php.j2
+    dest: /var/www/wordpress/wp-config.php
+    owner: www-data
+    group: www-data
+    mode: "644"
+
+- name: Change the default nginx sites available file
+  template:
+    src: ../templates/default.j2
+    dest: /etc/nginx/sites-available/default
+    owner: root
+    group: root
+    mode: "0644"
+  become: yes
+
+- name: Add wordpress site to nginx
+  template:
+    src: ../templates/wordpress.j2
+    dest: /etc/nginx/sites-available/wordpress
+    owner: root
+    group: root
+    mode: "0644"
+  become: yes
+
+- name: Enable wordpress site
+  file:
+    src: /etc/nginx/sites-available/wordpress
+    dest: /etc/nginx/sites-enabled/wordpress
+    state: link
+  become: yes

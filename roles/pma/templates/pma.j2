@@ -1,0 +1,19 @@
+server{
+    listen 80;
+    server_name pma.rabinmishra.com.np;
+
+    root /usr/share/phpmyadmin;
+    index index.php index.html index.htm;
+
+    location / {
+        index index.php;
+        try_files $uri $uri/ =404;
+     
+        location ~ \.php$ {
+            include snippets/fastcgi-php.conf;
+            fastcgi_pass unix:/run/php/php8.3-fpm.sock; 
+            fastcgi_param SCRIPT_FILENAME $request_filename;
+            include fastcgi_params;
+        }
+     }
+}

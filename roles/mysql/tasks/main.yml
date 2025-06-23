@@ -1,0 +1,41 @@
+#SPDX-License-Identifier: MIT-0
+---
+- name: Install MYSQL Packages
+  ansible.builtin.package:
+    name:
+      - mysql-server
+      - mysql-client
+      - python3-pymysql
+    state: present
+    update_cache: yes
+  notify: Restart MYSQL
+
+- name: Start and enable MYSQL services
+  ansible.builtin.service:
+    name: mysql
+    state: started
+    enabled: yes
+
+- name: create a db user
+  community.mysql.mysql_user:
+    name: "{{ db_admin_user }}"
+    host: localhost
+    password: "{{ db_admin_password }}"
+    priv: "*.*:ALL,GRANT"
+    state: present
+    login_user: root
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    column_case_sensitive: false
+
+- name: Create application database
+  community.mysql.mysql_db:
+    name: "{{ app_db_name }}"
+    state: present
+    login_user: "{{ db_admin_user }}"
+    login_password: "{{ db_admin_password }}"
+
+- name: Ensure Mysql service is running
+  ansible.builtin.service:
+    name: mysql
+    state: started
+    enabled: yes

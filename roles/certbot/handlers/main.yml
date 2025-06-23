@@ -1,0 +1,8 @@
+#SPDX-License-Identifier: MIT-0
+---
+# handlers file for certbot
+- name: restart nginx
+  ansible.builtin.service:
+    name: nginx
+    state: restarted
+  when: certbot_result is changed # Only restart if certbot made changes

@@ -1,0 +1,13 @@
+#SPDX-License-Identifier: MIT-0
+---
+- name: Install nginx
+  apt:
+    name: nginx
+    state: latest
+
+- name: Ensure nginx chaleko xa
+  systemd:
+    name: nginx
+    state: started
+    enabled: yes
+  notify: restart nginx

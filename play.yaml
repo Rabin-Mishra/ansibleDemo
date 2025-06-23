@@ -1,0 +1,11 @@
+- name: LEMP stack and wordpress
+  hosts: myhosts
+  become: yes #making sudo privilegees
+
+  roles:
+    - nginx
+    - mysql
+    - php
+    - pma
+    - wordpress
+    - certbot

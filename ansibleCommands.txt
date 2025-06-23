@@ -1,0 +1,7 @@
+
+
+ansible-galaxy init name_of_roles_to_be_installed
+eg: ansible-galaxy init certbot 
+
+To run the ansible playbook itself
+ansible-playbook -i hosts play.yaml
