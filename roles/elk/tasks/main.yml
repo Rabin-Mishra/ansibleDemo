@@ -1,0 +1,87 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for elk
+
+
+# roles/elk/tasks/main.yml
+
+- name: Add Elastic GPG Key
+  apt_key:
+    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    state: present
+  become: true
+
+- name: Add Elastic repository
+  apt_repository:
+    repo: "deb https://artifacts.elastic.co/packages/8.x/apt stable main"
+    state: present
+    filename: elastic
+  become: true
+
+- name: Update apt cache
+  apt:
+    update_cache: yes
+  become: true
+
+- name: Install Elasticsearch
+  apt:
+    name: elasticsearch
+    state: present
+  become: true
+
+- name: Enable and start Elasticsearch
+  systemd:
+    name: elasticsearch
+    enabled: true
+    state: started
+  become: true
+
+- name: Install Kibana
+  apt:
+    name: kibana
+    state: present
+  become: true
+
+- name: Enable and start Kibana
+  systemd:
+    name: kibana
+    enabled: true
+    state: started
+  become: true
+
+- name: Configure Kibana
+  template:
+    src: kibana.yml.j2
+    dest: /etc/kibana/kibana.yml
+  notify: restart kibana
+
+- name: Add Nginx config for Kibana
+  template:
+    src: kibana_nginx.j2
+    dest: /etc/nginx/sites-available/kibana
+  notify: restart nginx
+  become: true
+
+- name: Enable Kibana Nginx site
+  file:
+    src: /etc/nginx/sites-available/kibana
+    dest: /etc/nginx/sites-enabled/kibana
+    state: link
+    force: true
+  notify: restart nginx
+  become: true
+
+- meta: flush_handlers 
+
+- name: Install Logstash
+  apt:
+    name: logstash
+    state: present
+  become: true
+
+- name: Enable and start Logstash
+  systemd:
+    name: logstash
+    enabled: true
+    state: started
+  become: true
