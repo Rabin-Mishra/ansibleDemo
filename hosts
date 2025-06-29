@@ -1,5 +1,5 @@
 [myhosts:vars]
-ansible_ssh_private_key_file= ~/.ssh/deploymentVM_key.pem
+ansible_ssh_private_key_file={{ vault_ssh_private_key_path }}
 
 [myhosts]
 4.228.65.155

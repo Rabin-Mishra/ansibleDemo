@@ -20,12 +20,12 @@
 
 - name: Generate SSL certificate with Nginx integration
   ansible.builtin.command: >-
-    certbot --nginx             
-    --non-interactive           
-    --agree-tos                 
-    --email mishrarabin92@gmail.com 
-    --redirect                  
-    --staple-ocsp               
+    certbot --nginx
+    --non-interactive
+    --agree-tos
+    --email {{ certbot_email }}
+    --redirect
+    --staple-ocsp
     -d {{ item }}
   loop: "{{ my_domains }}"
   register: certbot_result

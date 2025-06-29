@@ -1,0 +1,9 @@
+my_domains:
+  - ansible.rabinmishra.com.np
+  - pma.rabinmishra.com.np
+  - wordpress.rabinmishra.com.np
+  - kibana.rabinmishra.com.np
+
+db_admin_user: "ansible_admin"
+app_db_name: "ansible_db"
+app_user: "ansible_user"

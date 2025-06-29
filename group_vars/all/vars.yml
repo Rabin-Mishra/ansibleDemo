@@ -1,0 +1,16 @@
+php_modules:
+  - php-curl
+  - php-gd
+  - php-mbstring
+  - php-xml
+  - php-zip
+  - php8.3-fpm
+  - php8.3-mysql
+  - php8.3-opcache
+
+elk_version: "8.13.0"
+
+mysql_root_password: "{{ vault_mysql_root_password }}"
+db_admin_password: "{{ vault_db_admin_password }}"
+app_user_password: "{{ vault_app_user_password }}"
+certbot_email: "{{ vault_certbot_email }}"

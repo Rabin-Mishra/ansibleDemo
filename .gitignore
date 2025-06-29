@@ -1,0 +1,20 @@
+# Vault
+.vault_pass
+*vault_pass*
+
+# Secrets
+*.pem
+*.key
+id_rsa*
+secrets/
+credentials/
+
+# Ansible
+*.retry
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.log
