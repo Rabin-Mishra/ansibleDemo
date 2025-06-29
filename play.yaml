@@ -1,12 +1,12 @@
-- name: LEMP stack and wordpress
+- name: LEMP stack ,Wordpress,Certbot along with ELK stack
   hosts: myhosts
   become: yes #making sudo privilegees
 
   roles:
-    - nginx
-    - mysql
-    - php
-    - pma
-    - wordpress
-    - certbot
+    # - nginx
+    # - mysql
+    # - php
+    # - pma
+    # - wordpress
+    # - certbot
     - elk
